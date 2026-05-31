@@ -1,0 +1,47 @@
+HTTP/1.1 200 OK
+Content-Type: application/json
+
+{
+  "status": "success",
+  "message": "Students retrieved successfully",
+  "data": {
+    "content": [
+      {
+        "id": 1,
+        "firstName": "Rahul",
+        "lastName": "Kumar",
+        "email": "rahul@example.com",
+        "phone": "9876543210",
+        "course": "Computer Science",
+        "age": 20,
+        "createdAt": "2026-05-31T23:13:30.123",
+        "updatedAt": "2026-05-31T23:13:30.123"
+      }
+    ],
+    "pageable": {
+      "pageNumber": 0,
+      "pageSize": 10,
+      "sort": {
+        "empty": false,
+        "sorted": true,
+        "unsorted": false
+      },
+      "offset": 0,
+      "paged": true,
+      "unpaged": false
+    },
+    "last": true,
+    "totalElements": 1,
+    "totalPages": 1,
+    "size": 10,
+    "number": 0,
+    "sort": {
+      "empty": false,
+      "sorted": true,
+      "unsorted": false
+    },
+    "first": true,
+    "numberOfElements": 1,
+    "empty": false
+  }
+}

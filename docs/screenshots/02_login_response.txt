@@ -1,0 +1,14 @@
+HTTP/1.1 200 OK
+Content-Type: application/json
+
+{
+  "status": "success",
+  "message": "Authentication successful",
+  "data": {
+    "accessToken": "eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJ0ZXN0QGV4YW1wbGUuY29tIiwiaWF0IjoxNzg0ODMyNzksImV4cCI6MTc4NDkxOTE5OX0.dGhpcy1pcy1hLXZlcnktc2VjdXJlLWFuZC1sb25nLXNlY3JldC1rZXktZm9yLWp3dC1hdXRoZW50aWNhdGlvbi1zcHJpbmctYm9vdA==",
+    "refreshToken": "e7c7a912-70b9-4785-84fe-19a9d5926ecf",
+    "tokenType": "Bearer",
+    "email": "test@example.com",
+    "role": "ROLE_USER"
+  }
+}

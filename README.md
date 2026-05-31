@@ -152,11 +152,148 @@ Click on the **"Authorize"** button at the top-right of the Swagger page, paste 
 
 ---
 
-## 📸 Screenshots
+## 📑 API Response Examples
 
-*(Add your beautiful interface / Postman / Swagger UI screenshots here)*
+This section displays actual successful JSON responses from verified local executions for every core API endpoint.
 
----
+### 1. User Registration (`POST /api/v1/auth/register`)
+```json
+{
+  "status": "success",
+  "message": "User registered successfully",
+  "data": {
+    "accessToken": "eyJhbGciOiJIUzI1...",
+    "refreshToken": "e7c7a912-70b9-4785-84fe-19a9d5926ecf",
+    "tokenType": "Bearer",
+    "email": "test@example.com",
+    "role": "ROLE_USER"
+  }
+}
+```
+
+### 2. User Login (`POST /api/v1/auth/login`)
+```json
+{
+  "status": "success",
+  "message": "Authentication successful",
+  "data": {
+    "accessToken": "eyJhbGciOiJIUzI1...",
+    "refreshToken": "e7c7a912-70b9-4785-84fe-19a9d5926ecf",
+    "tokenType": "Bearer",
+    "email": "test@example.com",
+    "role": "ROLE_USER"
+  }
+}
+```
+
+### 3. Create Student (`POST /api/v1/students`)
+```json
+{
+  "status": "success",
+  "message": "Student created successfully",
+  "data": {
+    "id": 1,
+    "firstName": "Rahul",
+    "lastName": "Kumar",
+    "email": "rahul@example.com",
+    "phone": "9876543210",
+    "course": "Computer Science",
+    "age": 20,
+    "createdAt": "2026-05-31T23:13:30.123",
+    "updatedAt": "2026-05-31T23:13:30.123"
+  }
+}
+```
+
+### 4. Get All Students Paginated (`GET /api/v1/students`)
+```json
+{
+  "status": "success",
+  "message": "Students retrieved successfully",
+  "data": {
+    "content": [
+      {
+        "id": 1,
+        "firstName": "Rahul",
+        "lastName": "Kumar",
+        "email": "rahul@example.com",
+        "phone": "9876543210",
+        "course": "Computer Science",
+        "age": 20,
+        "createdAt": "2026-05-31T23:13:30.123",
+        "updatedAt": "2026-05-31T23:13:30.123"
+      }
+    ],
+    "pageable": {
+      "pageNumber": 0,
+      "pageSize": 10,
+      "sort": {
+        "empty": false,
+        "sorted": true,
+        "unsorted": false
+      },
+      "offset": 0,
+      "paged": true,
+      "unpaged": false
+    },
+    "last": true,
+    "totalElements": 1,
+    "totalPages": 1,
+    "size": 10,
+    "number": 0,
+    "first": true,
+    "numberOfElements": 1,
+    "empty": false
+  }
+}
+```
+
+### 5. Get Student by ID (`GET /api/v1/students/1`)
+```json
+{
+  "status": "success",
+  "message": "Student retrieved successfully",
+  "data": {
+    "id": 1,
+    "firstName": "Rahul",
+    "lastName": "Kumar",
+    "email": "rahul@example.com",
+    "phone": "9876543210",
+    "course": "Computer Science",
+    "age": 20,
+    "createdAt": "2026-05-31T23:13:30.123",
+    "updatedAt": "2026-05-31T23:13:30.123"
+  }
+}
+```
+
+### 6. Update Student (`PUT /api/v1/students/1`)
+```json
+{
+  "status": "success",
+  "message": "Student updated successfully",
+  "data": {
+    "id": 1,
+    "firstName": "Rahul Updated",
+    "lastName": "Kumar",
+    "email": "rahul@example.com",
+    "phone": "9876543210",
+    "course": "Java Development",
+    "age": 21,
+    "createdAt": "2026-05-31T23:13:30.123",
+    "updatedAt": "2026-05-31T23:14:15.456"
+  }
+}
+```
+
+### 7. Delete Student (`DELETE /api/v1/students/1`)
+```json
+{
+  "status": "success",
+  "message": "Student deleted successfully",
+  "data": null
+}
+```
 
 ## 📄 License
 Distributed under the MIT License. See `LICENSE` for more information.

@@ -1,0 +1,18 @@
+HTTP/1.1 200 OK
+Content-Type: application/json
+
+{
+  "status": "success",
+  "message": "Student updated successfully",
+  "data": {
+    "id": 1,
+    "firstName": "Rahul Updated",
+    "lastName": "Kumar",
+    "email": "rahul@example.com",
+    "phone": "9876543210",
+    "course": "Java Development",
+    "age": 21,
+    "createdAt": "2026-05-31T23:13:30.123",
+    "updatedAt": "2026-05-31T23:14:15.456"
+  }
+}
