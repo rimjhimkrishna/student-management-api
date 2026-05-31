@@ -125,6 +125,13 @@ start.bat
 ```
 *(Hibernate will automatically generate tables and push the 100 realistic student entries upon first boot).*
 
+#### 🛠️ Troubleshooting Port Conflicts
+If you receive a build error stating **`Port 8080 was already in use`** (which occurs if a background Spring Boot process or another local server is holding the port open), run the automated port cleaner script in the root directory before running the bootstrapper:
+```cmd
+kill_port_8080.bat
+```
+This utility automatically detects and terminates any active processes binding port `8080`, instantly clearing the port for the application server.
+
 ---
 
 ### Option B: Docker Container Execution (Zero Setup)
