@@ -1,4 +1,4 @@
-# Student Management REST API
+# 🎓 Student Management REST API
 
 ![Java 17](https://img.shields.io/badge/Java-17-orange?style=for-the-badge&logo=openjdk)
 ![Spring Boot 3.2.5](https://img.shields.io/badge/Spring_Boot-3.2.5-brightgreen?style=for-the-badge&logo=springboot)
@@ -11,15 +11,59 @@ A production-ready, highly secure RESTful API built on Spring Boot for managing 
 
 ---
 
+## 🏛️ System Architecture & Data Flow
+
+This diagram illustrates how client requests are processed, authenticated via Spring Security, and routed to the database.
+
+```mermaid
+sequenceDiagram
+    autonumber
+    actor Client
+    participant SecurityFilter as Security Filter Chain (JWT Filter)
+    participant AuthController as Auth Controller
+    participant StudentController as Student Controller
+    participant Service as Service Layer
+    participant DB as PostgreSQL Database
+
+    alt Public Access (Registration / Login)
+        Client->>SecurityFilter: Bypass Security (Public Endpoints)
+        SecurityFilter->>AuthController: Forward Request
+        AuthController->>DB: Verify Credentials / Register User
+        DB-->>AuthController: User Info
+        AuthController-->>Client: Return JWT + Refresh Token
+    else Protected Access (Student CRUD)
+        Client->>SecurityFilter: Request with Bearer JWT
+        activate SecurityFilter
+        Note over SecurityFilter: Extract & Validate JWT
+        alt Token Valid
+            SecurityFilter->>StudentController: Forward to Controller
+            deactivate SecurityFilter
+            activate StudentController
+            StudentController->>Service: Call Student CRUD Actions
+            activate Service
+            Service->>DB: Query / Mutate Records
+            DB-->>Service: Database Result
+            Service-->>StudentController: DTO Response
+            deactivate Service
+            StudentController-->>Client: JSON Response (Envelope Format)
+            deactivate StudentController
+        else Token Expired / Invalid
+            SecurityFilter-->>Client: 401 Unauthorized / 403 Forbidden
+        end
+    end
+```
+
+---
+
 ## 🚀 Key Features
 
-*   **Secure Stateless Authentication**: Fully secured with Spring Security and cryptographic **JWT Access Tokens**.
-*   **Refresh Token Rotation (RTR)**: Stateful random UUID-based session refresh, with automatic token rotation on every exchange to defend against session replay attacks.
-*   **Complete CRUD Capabilities**: Fully validated endpoints for creating, retrieving, updating, and deleting student records.
-*   **Automatic 100-Student Database Seeder**: Programmatic seeder that seeds 100 unique, realistic records into PostgreSQL on first start if the database is empty.
-*   **SLF4J & Logback Audit Logging**: Log every CRUD action, mapping operations to timestamp, operation type, student ID, and email, with rolling logs stored in `logs/application.log`.
-*   **Containerized Environment**: Simple multi-stage `Dockerfile` and a multi-container `docker-compose.yml` for database and application isolation.
-*   **Interactive API Documentation**: Live interactive endpoints testing via Swagger UI.
+*   **🔒 Secure Stateless Authentication**: Fully secured with Spring Security and cryptographic **JWT Access Tokens**.
+*   **🔄 Refresh Token Rotation (RTR)**: Stateful random UUID-based session refresh, with automatic token rotation on every exchange to defend against session replay attacks.
+*   **🎓 Complete CRUD Capabilities**: Fully validated endpoints for creating, retrieving, updating, and deleting student records.
+*   **🌱 Automatic Database Seeder**: Programmatic database seeder that seeds 100 unique, realistic student records into PostgreSQL on first start if the database is empty.
+*   **📝 SLF4J & Logback Audit Logging**: Logs every CRUD action mapping operations to timestamp, operation type, student ID, and email, with rolling logs stored in `logs/application.log`.
+*   **🐳 Containerized Environment**: Simple multi-stage `Dockerfile` and a multi-container `docker-compose.yml` for database and application isolation.
+*   **📖 Interactive API Documentation**: Live interactive endpoints testing via Swagger UI.
 
 ---
 
@@ -35,6 +79,42 @@ A production-ready, highly secure RESTful API built on Spring Boot for managing 
 | **Spring Doc OpenAPI** | 2.5.0 | Interactive API Documentation engine. |
 | **Lombok** | 1.18.30 | Boilerplate code reduction library. |
 | **Docker** | 3.8 | Multi-container isolation. |
+
+---
+
+## 📁 Project Structure
+
+Below is the layout of the project, detailing how files and components are structured:
+
+```text
+project-01/
+├── src/
+│   ├── main/
+│   │   ├── java/com/example/student/
+│   │   │   ├── config/             # Configuration classes (Web, Database Seed, OpenAPI)
+│   │   │   ├── controller/         # REST Controllers (Auth, Student)
+│   │   │   ├── dto/                # Request & Response Data Transfer Objects
+│   │   │   ├── exception/          # Global Exception Handler and custom exceptions
+│   │   │   ├── model/              # JPA Entities (User, Student, RefreshToken, Role)
+│   │   │   ├── repository/         # Spring Data JPA Repositories
+│   │   │   ├── security/           # Custom Jwt Filter, Services, & Security Config
+│   │   │   ├── service/            # Service interfaces
+│   │   │   │   └── impl/           # Service implementation details
+│   │   │   └── StudentApplication.java # Application entry point
+│   │   └── resources/
+│   │       ├── application.properties  # Database and JWT configurations
+│   │       ├── data.sql                # Initial data (if applicable)
+│   │       └── logback-spring.xml      # Logger configuration (Rolling file settings)
+│   └── test/                       # Unit and Integration tests
+├── docs/                           # Documentation resources
+│   └── postman_collection.json     # Postman collection API tests
+├── Dockerfile                      # Application docker build file
+├── docker-compose.yml              # DB and App compose config
+├── start.bat                       # Local execution bootstrapper
+├── kill_port_8080.bat              # Port cleaning tool (terminates port 8080 processes)
+├── pom.xml                         # Maven dependencies config
+└── README.md                       # Documentation
+```
 
 ---
 
@@ -96,9 +176,10 @@ A production-ready, highly secure RESTful API built on Spring Boot for managing 
 
 ---
 
-## 🛠️ Environmental Variable Settings
+## ⚙️ Environmental Variable Settings
 
-Configure `.env` in the root using the template inside **[.env.example](file:///.env.example)**:
+Configure your environment settings using a `.env` file in the root directory. You can use the template inside **[.env.example](file:///c:/Users/HP/Desktop/demo/project-01/.env.example)**:
+
 ```properties
 DB_URL=jdbc:postgresql://localhost:5432/student_db
 DB_USERNAME=postgres
@@ -150,12 +231,22 @@ Docker will:
 
 ---
 
-## 📖 Live API Documentation
+## 📖 Live API Documentation & Testing
 
+### 1. Swagger UI
 Once the application is running (locally or on Docker), open the following URL in your web browser:
 🔗 **[Swagger UI Documentation](http://localhost:8080/swagger-ui.html)**
 
 Click on the **"Authorize"** button at the top-right of the Swagger page, paste your active Bearer JWT token, and you can invoke all protected APIs directly from the browser!
+
+### 2. Postman Collection
+A fully configured Postman collection is available to quickly test and interact with all the API endpoints.
+- Location: [Student_API.postman_collection.json](file:///c:/Users/HP/Desktop/demo/project-01/Student_API.postman_collection.json)
+- **Import steps**:
+  1. Open Postman.
+  2. Click **Import** at the top left.
+  3. Drag and drop or browse to import `Student_API.postman_collection.json`.
+  4. The collection includes pre-configured environment variables for easy setup. Once logged in, the bearer token will automatically populate for protected calls!
 
 ---
 
@@ -302,5 +393,8 @@ This section displays actual successful JSON responses from verified local execu
 }
 ```
 
+---
+
 ## 📄 License
+
 Distributed under the MIT License. See `LICENSE` for more information.
