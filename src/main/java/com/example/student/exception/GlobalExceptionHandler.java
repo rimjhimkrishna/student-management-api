@@ -66,6 +66,12 @@ public class GlobalExceptionHandler {
         return new ResponseEntity<>(response, HttpStatus.BAD_REQUEST);
     }
 
+    @ExceptionHandler(ClaudeApiException.class)
+    public ResponseEntity<ApiResponse<Void>> handleClaudeApiException(ClaudeApiException ex) {
+        ApiResponse<Void> response = ApiResponse.error(ex.getMessage());
+        return new ResponseEntity<>(response, ex.getHttpStatus());
+    }
+
     @ExceptionHandler(Exception.class)
     public ResponseEntity<ApiResponse<Void>> handleGlobalException(Exception ex) {
         ApiResponse<Void> response = ApiResponse.error("An unexpected error occurred: " + ex.getMessage());

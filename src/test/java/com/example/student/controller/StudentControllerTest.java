@@ -36,8 +36,14 @@ import static org.springframework.test.web.servlet.request.MockMvcRequestBuilder
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
+import org.springframework.context.annotation.Import;
+import com.example.student.security.SecurityConfig;
+import com.example.student.security.JwtAuthenticationFilter;
+import com.example.student.security.AiRateLimitFilter;
+
 @WebMvcTest(StudentController.class)
 @WithMockUser
+@Import({SecurityConfig.class, JwtAuthenticationFilter.class, AiRateLimitFilter.class})
 class StudentControllerTest {
 
     @Autowired
@@ -64,7 +70,7 @@ class StudentControllerTest {
                 .id(1L)
                 .firstName("Rahul")
                 .lastName("Kumar")
-                .email("rahul@example.com")
+                .email("rahul@gmail.com")
                 .phone("9876543210")
                 .course("Computer Science")
                 .age(20)
@@ -75,7 +81,7 @@ class StudentControllerTest {
         requestDTO = StudentRequestDTO.builder()
                 .firstName("Rahul")
                 .lastName("Kumar")
-                .email("rahul@example.com")
+                .email("rahul@gmail.com")
                 .phone("9876543210")
                 .course("Computer Science")
                 .age(20)
@@ -96,7 +102,7 @@ class StudentControllerTest {
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$.status", is("success")))
                 .andExpect(jsonPath("$.message", is("Students retrieved successfully")))
-                .andExpect(jsonPath("$.data.content[0].email", is("rahul@example.com")));
+                .andExpect(jsonPath("$.data.content[0].email", is("rahul@gmail.com")));
 
         verify(studentService, times(1)).getAllStudents(pageable);
     }
@@ -109,7 +115,7 @@ class StudentControllerTest {
                         .contentType(MediaType.APPLICATION_JSON))
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$.status", is("success")))
-                .andExpect(jsonPath("$.message", is("Student retrieved successfully")))
+                .andExpect(jsonPath("$.message", is("Student found")))
                 .andExpect(jsonPath("$.data.firstName", is("Rahul")));
 
         verify(studentService, times(1)).getStudentById(1L);
@@ -131,17 +137,17 @@ class StudentControllerTest {
 
     @Test
     void testGetStudentByEmail_Success() throws Exception {
-        when(studentService.getStudentByEmail("rahul@example.com")).thenReturn(responseDTO);
+        when(studentService.getStudentByEmail("rahul@gmail.com")).thenReturn(responseDTO);
 
         mockMvc.perform(get("/api/v1/students/search")
-                        .param("email", "rahul@example.com")
+                        .param("email", "rahul@gmail.com")
                         .contentType(MediaType.APPLICATION_JSON))
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$.status", is("success")))
-                .andExpect(jsonPath("$.message", is("Student found successfully")))
-                .andExpect(jsonPath("$.data.email", is("rahul@example.com")));
+                .andExpect(jsonPath("$.message", is("Student found")))
+                .andExpect(jsonPath("$.data.email", is("rahul@gmail.com")));
 
-        verify(studentService, times(1)).getStudentByEmail("rahul@example.com");
+        verify(studentService, times(1)).getStudentByEmail("rahul@gmail.com");
     }
 
     @Test

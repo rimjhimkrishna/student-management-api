@@ -143,7 +143,7 @@ class StudentServiceTest {
 
         assertThatThrownBy(() -> studentService.createStudent(requestDTO))
                 .isInstanceOf(IllegalArgumentException.class)
-                .hasMessageContaining("Email address already exists: rahul@example.com");
+                .hasMessageContaining("Student already exists with email: rahul@example.com");
 
         verify(studentRepository, times(1)).existsByEmail("rahul@example.com");
         verify(studentRepository, never()).save(any(Student.class));
@@ -171,7 +171,7 @@ class StudentServiceTest {
 
         assertThatThrownBy(() -> studentService.updateStudent(1L, requestDTO))
                 .isInstanceOf(IllegalArgumentException.class)
-                .hasMessageContaining("Email address already exists: rahul@example.com");
+                .hasMessageContaining("Email already in use: rahul@example.com");
 
         verify(studentRepository, times(1)).findById(1L);
         verify(studentRepository, times(1)).existsByEmailAndIdNot("rahul@example.com", 1L);

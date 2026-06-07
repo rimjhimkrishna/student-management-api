@@ -30,4 +30,10 @@ public interface StudentRepository extends JpaRepository<Student, Long> {
 
     @Query("SELECT AVG(s.age) FROM Student s")
     Double findAverageAge();
+
+    @Query("SELECT s.course, COUNT(s) FROM Student s GROUP BY s.course")
+    List<Object[]> findCourseDistribution();
+
+    @Query("SELECT COUNT(s) FROM Student s WHERE s.age BETWEEN :min AND :max")
+    Long countByAgeRange(@Param("min") int min, @Param("max") int max);
 }

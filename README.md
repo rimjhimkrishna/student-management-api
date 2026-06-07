@@ -139,6 +139,35 @@ project-01/
 | `PUT` | `/api/v1/students/{id}` | Update details of an existing student by ID. |
 | `DELETE` | `/api/v1/students/{id}` | Remove a student record permanently. |
 
+### 🧠 AI-Powered Operations (Protected - Requires Bearer JWT & Rate-Limited)
+
+| HTTP Method | Endpoint | Description |
+| :--- | :--- | :--- |
+| `GET` | `/api/v1/ai/students/{id}/study-plan` | Generates a 3-month study plan for a specific student. |
+| `POST` | `/api/v1/ai/students/nl-search` | Filters students based on natural language query inputs. |
+| `GET` | `/api/v1/ai/analytics/insights` | Generates detailed narrative analysis stats reports. |
+| `GET` | `/api/v1/ai/students/at-risk` | Audit students to find high, medium, or low risk cases. |
+| `POST` | `/api/v1/ai/chat` | Contextual chatbot backed by database aggregate metrics. |
+| `POST` | `/api/v1/ai/students/email-content` | Generate bulk personalized email drafts in parallel (max 50). |
+| `GET` | `/api/v1/ai/reports/monthly` | Stream strategic summaries into downloadable PDFs (iText7). |
+
+---
+
+## 🧠 AI-Powered Features (Claude AI Integration)
+
+This system integrates **Anthropic Claude (Messages API)** to upgrade CRUD capabilities with intelligence.
+
+### 🔑 Anthropic API Key Setup
+To enable AI operations, obtain a key from the **[Anthropic Console](https://console.anthropic.com)** and pass it into the application:
+- **Local Dev**: Add `CLAUDE_API_KEY=your_key` in your `.env` file.
+- **Docker Dev**: Set `CLAUDE_API_KEY` on your host machine before running `docker-compose up --build`.
+
+### 🛡️ Resilience & Production Hardening
+- **⏳ Rate Limiting**: All `/api/v1/ai/**` routes are protected by a Bucket4j filter allowing up to **60 requests per minute per user**.
+- **⚡ Cache Layer**: Caching is driven by **Caffeine** with a max size of `500` entries and a time-to-live (TTL) of `10 minutes` for study plans and analytics. Cache hits return `"cachedResponse": true`.
+- **🔌 Circuit Breaker**: Resilience4j isolates Claude API calls. If failures exceed **50%** in a sliding window of **10** requests, the breaker trips to `OPEN` for **30 seconds** and fails gracefully returning: 
+  `"AI service is temporarily unavailable. Please try again in a moment."`
+
 ---
 
 ## 📦 Request / Response Formats

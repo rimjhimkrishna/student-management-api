@@ -8,4 +8,5 @@ INSERT INTO students (first_name, last_name, email, phone, course, age, created_
 ('Rohan', 'Desai', 'rohan.desai@gmail.com', '+91-5544332211', 'Artificial Intelligence', 21, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP),
 ('Kavita', 'Joshi', 'kavita.joshi@gmail.com', '+91-4433221100', 'Cyber Security', 22, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP),
 ('Arjun', 'Reddy', 'arjun.reddy@gmail.com', '+91-3322110099', 'Cloud Computing', 24, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP),
-('Meera', 'Nair', 'meera.nair@gmail.com', '+91-2211009988', 'Software Engineering', 20, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP);
+('Meera', 'Nair', 'meera.nair@gmail.com', '+91-2211009988', 'Software Engineering', 20, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP),
+('Babu', 'Rao', 'babu.rao@gmail.com', '+91-1122334455', 'Computer Science', 65, '2015-01-01 10:00:00', CURRENT_TIMESTAMP);
